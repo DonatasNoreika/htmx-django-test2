@@ -40,4 +40,6 @@ def create_contact(request):
     if form.is_valid():
         form.save()
         print("Išsaugojo")
-        return render(request, template_name='partials/contact_list.html', context=context)
+        response = render(request, template_name='partials/contact_list.html', context=context)
+        response['HX-Trigger'] = 'success'
+        return response
