@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from .models import Contact
 from django.db.models import Q
+from .forms import ContactForm
+from django.views.decorators.http import require_http_methods
+
 
 def contacts(request):
     context = {
-        'contacts': Contact.objects.all().order_by('-pk')
+        'contacts': Contact.objects.all().order_by('-pk'),
+        'form': ContactForm(),
     }
     return render(request, template_name="contacts.html", context=context)
 
@@ -16,6 +20,8 @@ def search(request):
     }
     return render(request, template_name="partials/contact_list.html", context=context)
 
+
+@require_http_methods(['POST'])
 def delete_contact(request, contact_id):
     contact = Contact.objects.get(pk=contact_id)
     contact.delete()
@@ -23,3 +29,15 @@ def delete_contact(request, contact_id):
         'contacts': Contact.objects.all().order_by('-pk')
     }
     return render(request, template_name="partials/contact_list.html", context=context)
+
+@require_http_methods(['POST'])
+def create_contact(request):
+    form = ContactForm(request.POST)
+    context = {
+        'contacts': Contact.objects.all().order_by('-pk'),
+        'form': form,
+    }
+    if form.is_valid():
+        form.save()
+        print("Išsaugojo")
+        return render(request, template_name='partials/contact_list.html', context=context)

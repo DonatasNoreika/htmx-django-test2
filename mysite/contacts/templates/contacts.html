@@ -2,6 +2,19 @@
 
 {% block content %}
 
+<form id="add-contact-form"
+      hx-post="{% url 'create_contact' %}"
+      hx-target="#contacts_list"
+      method="post"
+>
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+    {{ form | crispy }}
+    <button class="btn btn-primary" type="submit">Create</button>
+</form>
+
+<hr>
+
 {% include 'partials/contact_list.html' %}
 
 {% endblock %}
