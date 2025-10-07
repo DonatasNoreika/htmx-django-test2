@@ -2,19 +2,11 @@
 
 {% block content %}
 
-<form id="add-contact-form"
-      hx-post="{% url 'create_contact' %}"
-      hx-target="#contacts_list"
-      hx-on:success="this.reset();"
-      method="post"
->
-    {% csrf_token %}
-    {% load crispy_forms_tags %}
-    {{ form | crispy }}
-    <button class="btn btn-primary" type="submit">Create</button>
-</form>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contact_modal">
+  Add Contact
+</button>
 
-<hr>
+{% include 'partials/add_contact_modal.html' %}
 
 {% include 'partials/contact_list.html' %}
 
