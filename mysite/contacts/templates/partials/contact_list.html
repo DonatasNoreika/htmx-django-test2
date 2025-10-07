@@ -16,7 +16,14 @@
                 <td>{{ contact.name }}</td>
                 <td>{{ contact.email }}</td>
                 <td>{{ contact.created_at }}</td>
-                <td><a class="btn btn-danger">Delete</a></td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <a class="btn btn-danger"
+                           hx-post="{% url 'delete_contact' contact.pk %}"
+                           hx-target="#contacts_list">Delete</a>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
             </tbody>
